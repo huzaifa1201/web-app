@@ -1,0 +1,40 @@
+{
+  "placeholderImages": [
+    {
+      "id": "user-avatar",
+      "description": "User avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1701615004837-40d8573b6652?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx1c2VyJTIwYXZhdGFyfGVufDB8fHx8MTc2NDYwOTMxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "user avatar"
+    },
+    {
+      "id": "video-thumbnail-1",
+      "description": "Video thumbnail 1",
+      "imageUrl": "https://images.unsplash.com/photo-1762329389942-c721052cb5ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx0ZWNoJTIwdHV0b3JpYWx8ZW58MHx8fHwxNzY0NjgyMzQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech tutorial"
+    },
+    {
+      "id": "video-thumbnail-2",
+      "description": "Video thumbnail 2",
+      "imageUrl": "https://images.unsplash.com/photo-1609405979808-08669e982546?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwcm9kdWN0JTIwcmV2aWV3fGVufDB8fHx8MTc2NDY4MjM0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "product review"
+    },
+    {
+      "id": "video-thumbnail-3",
+      "description": "Video thumbnail 3",
+      "imageUrl": "https://images.unsplash.com/photo-1746510401450-20742d210310?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2bG9nJTIwdHJhdmVsfGVufDB8fHx8MTc2NDY4MjM0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "vlog travel"
+    },
+    {
+      "id": "video-thumbnail-4",
+      "description": "Video thumbnail 4",
+      "imageUrl": "https://images.unsplash.com/photo-1610041321338-fb537fdbe1a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnYW1pbmclMjBzdHJlYW18ZW58MHx8fHwxNzY0NjgyMzQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gaming stream"
+    },
+    {
+      "id": "video-thumbnail-5",
+      "description": "Video thumbnail 5",
+      "imageUrl": "https://images.unsplash.com/photo-1588516302272-d9dc364954c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkaXklMjBwcm9qZWN0fGVufDB8fHx8MTc2NDY4MjM0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "diy project"
+    }
+  ]
+}
