@@ -10,28 +10,11 @@ import {
   Tooltip,
 } from 'recharts';
 import { viewsData as defaultViewsData } from '@/lib/data';
-import { getYouTubeViewsData } from '@/lib/youtube-api';
-import { useUser } from '@/firebase/auth/use-user';
 
 export function ChannelPerformanceChart() {
-  const { user } = useUser();
-  const [viewsData, setViewsData] = useState(defaultViewsData);
+  const [viewsData] = useState(defaultViewsData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        try {
-          const data = await getYouTubeViewsData(user.uid);
-          if (data.length > 0) {
-            setViewsData(data);
-          }
-        } catch (error) {
-          console.error('Error fetching views data:', error);
-        }
-      }
-    };
-    fetchData();
-  }, [user]);
+  // Authentication removed - using default data
 
   return (
     <ResponsiveContainer width="100%" height={300}>

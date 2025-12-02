@@ -8,9 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, ExternalLink, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
-import { saveApiKeys, getApiKeys } from '@/lib/api-keys';
-
 export default function SettingsPage() {
   const [showGeminiKey, setShowGeminiKey] = useState(false);
   const [showYoutubeKey, setShowYoutubeKey] = useState(false);
@@ -22,81 +19,35 @@ export default function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingKeys, setIsLoadingKeys] = useState(true);
 
-  const { user } = useUser();
   const { toast } = useToast();
 
   useEffect(() => {
-    const loadApiKeys = async () => {
-      if (user) {
-        setIsLoadingKeys(true);
-        try {
-          const keys = await getApiKeys(user.uid);
-          setGeminiKey(keys.geminiApiKey);
-          setYoutubeKey(keys.youtubeApiKey);
-          setGoogleTrendsKey(keys.googleTrendsApiKey);
-        } catch (error) {
-          console.error('Error loading API keys:', error);
-        } finally {
-          setIsLoadingKeys(false);
-        }
-      } else {
-        // Fallback to localStorage if not logged in (for development)
-        setGeminiKey(localStorage.getItem('GEMINI_API_KEY') || '');
-        setYoutubeKey(localStorage.getItem('YOUTUBE_API_KEY') || '');
-        setGoogleTrendsKey(localStorage.getItem('GOOGLE_TRENDS_API_KEY') || '');
-        setIsLoadingKeys(false);
-      }
-    };
-    loadApiKeys();
-  }, [user]);
+    // Load API keys from localStorage (authentication removed)
+    setGeminiKey(localStorage.getItem('GEMINI_API_KEY') || '');
+    setYoutubeKey(localStorage.getItem('YOUTUBE_API_KEY') || '');
+    setGoogleTrendsKey(localStorage.getItem('GOOGLE_TRENDS_API_KEY') || '');
+    setIsLoadingKeys(false);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user) {
-      // Fallback to localStorage if not logged in
-      localStorage.setItem('GEMINI_API_KEY', geminiKey);
-      localStorage.setItem('YOUTUBE_API_KEY', youtubeKey);
-      localStorage.setItem('GOOGLE_TRENDS_API_KEY', googleTrendsKey);
-      toast({
-        title: "Settings Saved!",
-        description: "Your API keys have been saved to localStorage.",
-      });
-      return;
-    }
-
     setIsLoading(true);
     try {
-      await saveApiKeys(user.uid, {
-        geminiApiKey: geminiKey,
-        youtubeApiKey: youtubeKey,
-        googleTrendsApiKey: googleTrendsKey,
-      });
-      
-      // Also save to localStorage as backup
+      // Save to localStorage (authentication removed)
       localStorage.setItem('GEMINI_API_KEY', geminiKey);
       localStorage.setItem('YOUTUBE_API_KEY', youtubeKey);
       localStorage.setItem('GOOGLE_TRENDS_API_KEY', googleTrendsKey);
       
       toast({
         title: "Settings Saved!",
-        description: "Your API keys have been saved securely.",
+        description: "Your API keys have been saved.",
       });
     } catch (error: any) {
       console.error('Error saving API keys:', error);
-      let errorMessage = 'Failed to save API keys. Please try again.';
-      
-      if (error?.message?.includes('permission') || error?.message?.includes('permissions')) {
-        errorMessage = 'Permission denied. Please make sure you are logged in and try again.';
-      } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
-        errorMessage = 'Network error. Please check your internet connection and try again.';
-      } else if (error?.code === 'unavailable') {
-        errorMessage = 'Firestore is temporarily unavailable. Please try again in a moment.';
-      }
-      
       toast({
         title: "Error",
-        description: errorMessage,
+        description: 'Failed to save API keys. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -110,12 +61,7 @@ export default function SettingsPage() {
         <CardHeader>
           <CardTitle>API Key Management</CardTitle>
           <CardDescription>
-            Manage your API keys to power TubeTrend AI features. 
-            {user ? (
-              <span className="text-green-600 dark:text-green-400"> Keys are securely stored in your account.</span>
-            ) : (
-              <span className="font-bold text-destructive"> Please sign in to save keys securely.</span>
-            )}
+            Manage your API keys to power TubeTrend AI features. Keys are stored in your browser's localStorage.
           </CardDescription>
         </CardHeader>
         <CardContent>

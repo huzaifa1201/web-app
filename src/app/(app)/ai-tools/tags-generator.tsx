@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select';
 import { Loader2, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
+// Authentication removed
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 
@@ -48,7 +48,7 @@ export default function TagsGenerator() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  // Authentication removed
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,7 +64,7 @@ export default function TagsGenerator() {
     try {
       const result = await generateVideoTags({
         ...data,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
       setTags(result.tags);
     } catch (error: any) {

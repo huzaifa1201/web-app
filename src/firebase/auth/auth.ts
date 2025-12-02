@@ -21,6 +21,11 @@ provider.addScope('https://www.googleapis.com/auth/yt-analytics.readonly');
 
 export const signInWithGoogle = async () => {
   try {
+    // Check if Firebase is properly configured
+    if (!auth.app.options.apiKey || auth.app.options.apiKey === 'your-api-key') {
+      throw new Error('Firebase is not configured. Please check your environment variables.');
+    }
+    
     const result = await signInWithPopup(auth, provider);
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -69,6 +74,12 @@ export const signInWithGoogle = async () => {
     // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
+    
+    // Provide more helpful error messages
+    if (error.message?.includes('Firebase is not configured')) {
+      throw new Error('Firebase configuration is missing. Please set up your .env.local file with Firebase credentials.');
+    }
+    
     // The email of the user's account used.
     const email = error.customData?.email;
     // The AuthCredential type that was used.
@@ -95,10 +106,21 @@ export const signOutWithGoogle = async () => {
 
 export const signInWithEmailPassword = async (email: string, password: string) => {
   try {
+    // Check if Firebase is properly configured
+    if (!auth.app.options.apiKey || auth.app.options.apiKey === 'your-api-key') {
+      throw new Error('Firebase is not configured. Please check your environment variables.');
+    }
+    
     const result = await signInWithEmailAndPassword(auth, email, password);
     return { user: result.user };
   } catch (error: any) {
     console.error('Email Sign-In Error:', error.code, error.message);
+    
+    // Provide more helpful error messages
+    if (error.message?.includes('Firebase is not configured')) {
+      throw new Error('Firebase configuration is missing. Please set up your .env.local file with Firebase credentials.');
+    }
+    
     throw error;
   }
 };
@@ -109,6 +131,11 @@ export const registerWithEmailPassword = async (
   displayName?: string
 ) => {
   try {
+    // Check if Firebase is properly configured
+    if (!auth.app.options.apiKey || auth.app.options.apiKey === 'your-api-key') {
+      throw new Error('Firebase is not configured. Please check your environment variables.');
+    }
+    
     const result = await createUserWithEmailAndPassword(auth, email, password);
     
     // Update display name if provided
@@ -119,6 +146,12 @@ export const registerWithEmailPassword = async (
     return { user: result.user };
   } catch (error: any) {
     console.error('Email Registration Error:', error.code, error.message);
+    
+    // Provide more helpful error messages
+    if (error.message?.includes('Firebase is not configured')) {
+      throw new Error('Firebase configuration is missing. Please set up your .env.local file with Firebase credentials.');
+    }
+    
     throw error;
   }
 };

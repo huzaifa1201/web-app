@@ -105,10 +105,6 @@ export function AppHeader() {
             <User className="h-4 w-4 mr-2"/>
             Support
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link href="/">Logout</Link>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

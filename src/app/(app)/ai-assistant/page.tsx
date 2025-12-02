@@ -28,9 +28,6 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { continueConversation } from '@/ai/flows/chat-flow';
 import type { ChatMessage } from '@/lib/history';
-import { useUser } from '@/firebase/auth/use-user';
-
-
 const formSchema = z.object({
   message: z.string().min(1, 'Message cannot be empty.'),
 });
@@ -47,7 +44,6 @@ export default function AIAssistantPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<FormValues>({
@@ -87,7 +83,7 @@ export default function AIAssistantPage() {
       const aiResponseText = await continueConversation({
         history,
         message: data.message,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
 
       const aiMessage: Message = {

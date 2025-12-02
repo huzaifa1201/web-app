@@ -34,53 +34,18 @@ import {
 } from '@/components/ui/table';
 import { channelStats as defaultChannelStats, topVideos as defaultTopVideos, trendingKeywords } from '@/lib/data';
 import { getYouTubeChannelStats, getYouTubeChannelVideos, type YouTubeChannelStats, type YouTubeVideo } from '@/lib/youtube-api';
-import { useUser } from '@/firebase/auth/use-user';
+// Authentication removed
 import Image from 'next/image';
 import { ChannelPerformanceChart } from '@/components/channel-performance-chart';
 import { Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user } = useUser();
   const [channelStats, setChannelStats] = useState(defaultChannelStats);
   const [topVideos, setTopVideos] = useState<YouTubeVideo[]>(defaultTopVideos);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        setIsLoading(true);
-        try {
-          const [stats, videos] = await Promise.all([
-            getYouTubeChannelStats(user.uid),
-            getYouTubeChannelVideos(user.uid),
-          ]);
-
-          if (stats) {
-            setChannelStats([
-              { name: 'Subscribers', value: stats.subscribers, change: stats.subscriberChange, changeType: stats.subscriberChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Views (30 days)', value: stats.views, change: stats.viewsChange, changeType: stats.viewsChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Watch Time (hrs)', value: stats.watchTime, change: stats.watchTimeChange, changeType: stats.watchTimeChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Est. Revenue', value: stats.estimatedRevenue, change: stats.revenueChange, changeType: stats.revenueChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-            ]);
-          }
-
-          if (videos.length > 0) {
-            setTopVideos(videos);
-          }
-        } catch (error: any) {
-          console.error('Error fetching YouTube data:', error);
-          // Silent fail for dashboard - show default data instead
-          // User can check Settings if they want real data
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [user]);
+  // Authentication removed - using default data
+  // If you want to fetch real data, you can use YouTube API key from settings
 
   return (
     <div className="flex flex-col gap-4 md:gap-8">

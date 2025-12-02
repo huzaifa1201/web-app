@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select';
 import { Copy, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
+// Authentication removed
 import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
@@ -41,7 +41,7 @@ export default function DescriptionGenerator() {
   const [description, setDescription] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  // Authentication removed
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,7 +58,7 @@ export default function DescriptionGenerator() {
     try {
       const result = await generateVideoDescription({
         ...data,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
       setDescription(result.description);
     } catch (error: any) {

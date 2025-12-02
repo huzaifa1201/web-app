@@ -22,92 +22,14 @@ import { topVideos as defaultTopVideos, channelStats as defaultChannelStats } fr
 import { getYouTubeChannelStats, getYouTubeChannelVideos, type YouTubeChannelStats, type YouTubeVideo } from '@/lib/youtube-api';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
-import { signInWithGoogle, signOutWithGoogle } from '@/firebase/auth/auth';
-
-
 export default function ChannelAnalyzerPage() {
-  const { user } = useUser();
   const { toast } = useToast();
   const [channelStats, setChannelStats] = useState(defaultChannelStats);
   const [videos, setVideos] = useState<YouTubeVideo[]>(defaultTopVideos);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        setIsLoading(true);
-        try {
-          const [stats, videoList] = await Promise.all([
-            getYouTubeChannelStats(user.uid),
-            getYouTubeChannelVideos(user.uid, undefined, 20),
-          ]);
-
-          if (stats) {
-            setChannelStats([
-              { name: 'Subscribers', value: stats.subscribers, change: stats.subscriberChange, changeType: stats.subscriberChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Views (30 days)', value: stats.views, change: stats.viewsChange, changeType: stats.viewsChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Watch Time (hrs)', value: stats.watchTime, change: stats.watchTimeChange, changeType: stats.watchTimeChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-              { name: 'Est. Revenue', value: stats.estimatedRevenue, change: stats.revenueChange, changeType: stats.revenueChange.startsWith('+') ? 'positive' as const : 'negative' as const },
-            ]);
-          }
-
-          if (videoList.length > 0) {
-            setVideos(videoList);
-          }
-        } catch (error: any) {
-          console.error('Error fetching YouTube data:', error);
-          let errorMessage = 'Failed to fetch channel data. Please check your API key settings.';
-          
-          if (error?.message?.includes('API key') || error?.message?.includes('not configured')) {
-            errorMessage = 'YouTube API key not configured. Please add your API key in Settings.';
-          } else if (error?.message?.includes('channel') || error?.message?.includes('not found')) {
-            errorMessage = 'Channel not found. Please connect your YouTube channel or set YOUTUBE_CHANNEL_ID in environment variables.';
-          } else if (error?.message?.includes('quota') || error?.message?.includes('limit')) {
-            errorMessage = 'YouTube API quota exceeded. Please try again later or check your API key limits.';
-          } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
-            errorMessage = 'Network error. Please check your internet connection and try again.';
-          }
-          
-          toast({
-            title: 'Error',
-            description: errorMessage,
-            variant: 'destructive',
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchData();
-  }, [user, toast]);
-
-  const handleConnect = async () => {
-    try {
-      await signInWithGoogle();
-      toast({
-        title: 'Successfully Connected!',
-        description: 'Your YouTube channel has been connected.',
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: 'Connection Failed',
-        description:
-          'Could not connect to your YouTube account. Please try again.',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleDisconnect = async () => {
-    await signOutWithGoogle();
-    toast({
-      title: 'Disconnected',
-      description: 'Your YouTube channel has been disconnected.',
-    });
-  }
+  // Authentication removed - using default data
+  // You can configure YouTube API key in Settings to fetch real data
 
   return (
     <div className="grid auto-rows-max items-start gap-4 md:gap-8">
@@ -115,26 +37,13 @@ export default function ChannelAnalyzerPage() {
         <CardHeader>
           <CardTitle>YouTube Channel Analyzer</CardTitle>
           <CardDescription>
-            {user
-              ? 'In-depth analytics and insights for your channel.'
-              : 'Connect your YouTube channel to get in-depth analytics and insights.'}
+            In-depth analytics and insights for your channel. Configure your YouTube API key in Settings to fetch real data.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {!user ? (
-            <Button onClick={handleConnect}>
-              <Youtube className="mr-2 h-4 w-4" /> Connect Your YouTube Channel
-            </Button>
-          ) : (
-            <div className="flex items-center gap-4">
-              <div className="text-lg font-semibold">
-                <p>Welcome, {user.displayName || 'Creator'}!</p>
-              </div>
-              <Button variant="outline" onClick={handleDisconnect}>
-                Disconnect
-              </Button>
-            </div>
-          )}
+          <div className="text-sm text-muted-foreground">
+            <p>Using sample data. Add your YouTube API key in Settings to see real analytics.</p>
+          </div>
         </CardContent>
       </Card>
 
@@ -168,9 +77,7 @@ export default function ChannelAnalyzerPage() {
         <CardHeader>
           <CardTitle>Top Videos</CardTitle>
           <CardDescription>
-            {user
-              ? 'A list of your most viewed videos.'
-              : 'A list of your most viewed videos (sample data).'}
+            A list of your most viewed videos (sample data).
           </CardDescription>
         </CardHeader>
         <CardContent>

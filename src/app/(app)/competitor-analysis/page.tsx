@@ -25,7 +25,7 @@ export default function CompetitorAnalysisPage() {
   const [videoData, setVideoData] = useState<AnalyzeVideoOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  // Authentication removed
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -40,7 +40,7 @@ export default function CompetitorAnalysisPage() {
     try {
       const result = await analyzeVideo({ 
         videoUrl: data.url,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
       setVideoData(result);
     } catch (error: any) {

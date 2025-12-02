@@ -65,13 +65,22 @@ export default function RegisterPage() {
     } catch (error: any) {
       console.error(error);
       let errorMessage = 'Failed to create account. Please try again.';
-      if (error.code === 'auth/email-already-in-use') {
+      
+      if (error.message?.includes('Firebase configuration is missing') || 
+          error.message?.includes('Firebase is not configured')) {
+        errorMessage = 'Firebase is not configured. Please check your .env.local file and add your Firebase credentials.';
+      } else if (error.code === 'auth/email-already-in-use') {
         errorMessage = 'An account with this email already exists.';
       } else if (error.code === 'auth/invalid-email') {
         errorMessage = 'Invalid email address.';
       } else if (error.code === 'auth/weak-password') {
         errorMessage = 'Password is too weak. Please use a stronger password.';
+      } else if (error.code === 'auth/invalid-api-key') {
+        errorMessage = 'Invalid Firebase API key. Please check your .env.local file.';
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your internet connection.';
       }
+      
       toast({
         title: 'Registration Failed',
         description: errorMessage,

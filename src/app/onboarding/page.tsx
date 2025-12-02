@@ -25,10 +25,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { initializeFirebase } from '@/firebase';
-import { useUser } from '@/firebase/auth/use-user';
 import { useToast } from '@/hooks/use-toast';
-import { doc, setDoc } from 'firebase/firestore';
 import { Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
@@ -41,9 +38,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function OnboardingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { user } = useUser();
   const { toast } = useToast();
-  const { firestore } = initializeFirebase();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -54,29 +49,14 @@ export default function OnboardingPage() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    if (!user) {
-      toast({
-        title: 'Error',
-        description: 'You must be signed in to complete onboarding.',
-        variant: 'destructive',
-      });
-      router.push('/');
-      return;
-    }
-
     setIsLoading(true);
     try {
-      // Save user profile data to Firestore
-      await setDoc(
-        doc(firestore, 'users', user.uid),
-        {
-          channelName: data.channelName || '',
-          channelDescription: data.channelDescription || '',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        { merge: true }
-      );
+      // Authentication removed - just save to localStorage for now
+      // You can implement your own storage mechanism if needed
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('channelName', data.channelName || '');
+        localStorage.setItem('channelDescription', data.channelDescription || '');
+      }
 
       toast({
         title: 'Profile Updated!',

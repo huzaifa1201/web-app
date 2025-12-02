@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Lightbulb, Copy, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
+// Authentication removed
 
 const formSchema = z.object({
   topic: z.string().min(10, 'Please enter a topic with at least 10 characters.'),
@@ -43,7 +43,7 @@ export default function TitleGenerator() {
   const [titles, setTitles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  // Authentication removed
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -61,7 +61,7 @@ export default function TitleGenerator() {
     try {
       const result = await generateVideoTitles({
         ...data,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
       setTitles(result.titles);
     } catch (error: any) {

@@ -1,23 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { initializeFirebase } from '..';
-
-const { auth } = initializeFirebase();
-
+// Authentication removed - always return null user and no loading state
 export const useUser = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  return { user, loading };
+  // Return null user and false loading since we don't need authentication
+  return { user: null, loading: false };
 };

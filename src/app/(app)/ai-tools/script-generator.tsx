@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/select';
 import { Copy, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/firebase/auth/use-user';
+// Authentication removed
 
 const formSchema = z.object({
   topic: z.string().min(10, 'Please enter a topic with at least 10 characters.'),
@@ -39,7 +39,7 @@ export default function ScriptGenerator() {
   const [outline, setOutline] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  // Authentication removed
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -55,7 +55,7 @@ export default function ScriptGenerator() {
     try {
       const result = await generateVideoScriptOutline({
         ...data,
-        userId: user?.uid,
+        userId: null, // Authentication removed
       });
       setOutline(result.outline);
     } catch (error: any) {
